@@ -28,4 +28,9 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 
-Route::resource('products', ProductController::class);
+Route::prefix('product')->name('product.')->middleware('auth')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('index');
+    Route::post('/', [ProductController::class, 'store'])->name('store');
+    Route::post('{product}', [ProductController::class, 'update'])->name('update');
+    Route::delete('/delete/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
+});

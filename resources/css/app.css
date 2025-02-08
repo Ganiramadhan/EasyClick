@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.rdt_TableCell {
+    overflow: visible !important;
+  }
+  

@@ -12,9 +12,13 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return Inertia::render('Products/Index', ['products' => $products]);
-        // return response()->json($products);
+
+        return Inertia::render('Products/Index', [
+            'products' => $products,
+            'successMessage' => session('successMessage') 
+        ]);
     }
+
 
     public function show($id)
     {
@@ -27,43 +31,55 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
-
-    public function create()
-    {
-        return Inertia::render('Products/Create');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
-
-        Product::create($request->all());
-        return redirect()->route('products.index');
+    
+        $data = $request->only(['name', 'price', 'description']);
+    
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $data['image'] = $imagePath;
+        }
+    
+        Product::create($data);
+    
+        return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    public function edit(Product $product)
-    {
-        return Inertia::render('Products/Edit', ['product' => $product]);
-    }
 
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric'
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        $product->update($request->all());
-        return redirect()->route('products.index');
+        $data = $request->only(['name', 'price', 'description']);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $data['image'] = $imagePath;
+        }
+
+        $product->update($data);
+
+        return redirect()->route('product.index')->with('success', 'Produk berhasil diperbarui!');
     }
+
 
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('products.index');
+        return redirect()->route('product.index')->with('success', 'Product deleted successfully!');
     }
+    
+    
 }
