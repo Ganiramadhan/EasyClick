@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Dialog, DialogBody } from "@material-tailwind/react";
+import { Dialog, DialogBody } from "@material-tailwind/react";
 import { FiX } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
