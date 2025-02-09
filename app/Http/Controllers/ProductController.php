@@ -6,6 +6,9 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver as GdDriver; 
 
 class ProductController extends Controller
 {
@@ -30,27 +33,40 @@ class ProductController extends Controller
 
         return response()->json($product);
     }
-
+    
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg'
         ]);
-    
+
         $data = $request->only(['name', 'price', 'description']);
-    
+
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
-            $data['image'] = $imagePath;
+            $manager = new ImageManager(new GdDriver());
+
+            $image = $manager->read($request->file('image')->getRealPath());
+
+            $image = $image->scale(width: 500);
+
+            // Generate nama unik untuk gambar
+            $imageName = 'products/' . time() . '.' . $request->file('image')->getClientOriginalExtension();
+
+            // Simpan gambar ke storage (public)
+            Storage::disk('public')->put($imageName, (string) $image->encode());
+
+            $data['image'] = $imageName;
         }
-    
-        Product::create($data);
-    
+
+        // Simpan produk ke database
+        $product = Product::create($data);
+
         return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan!');
     }
+
 
 
     public function update(Request $request, Product $product)
@@ -59,16 +75,35 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg'
         ]);
 
         $data = $request->only(['name', 'price', 'description']);
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
-            $data['image'] = $imagePath;
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+
+            // Inisialisasi ImageManager dengan driver GD
+            $manager = new ImageManager(new GdDriver());
+
+            // Baca gambar dari request
+            $image = $manager->read($request->file('image')->getRealPath());
+
+            // Resize gambar (misalnya 500x500, aspect ratio dipertahankan)
+            $image = $image->scale(width: 500);
+
+            // Generate nama unik
+            $imageName = 'products/' . time() . '.' . $request->file('image')->getClientOriginalExtension();
+
+            // Simpan gambar ke storage (public)
+            Storage::disk('public')->put($imageName, (string) $image->encode());
+
+            $data['image'] = $imageName;
         }
 
+        // Update produk dengan data baru
         $product->update($data);
 
         return redirect()->route('product.index')->with('success', 'Produk berhasil diperbarui!');

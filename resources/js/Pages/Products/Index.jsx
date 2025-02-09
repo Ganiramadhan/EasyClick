@@ -103,6 +103,10 @@ export default function Products({ products, flash }) {
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleRowClick = (row) => {
+    handleOpenModal(row);
+  };
+
   const columns = [
     {
       name: "#",
