@@ -10,16 +10,26 @@ class ProductSeeder extends Seeder
     public function run()
     {
         $products = [
-            ['name' => 'Udang Vannamei Segar 1kg', 'description' => 'Udang vannamei segar langsung dari tambak, cocok untuk berbagai hidangan.', 'price' => 120000, 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Ikan Salmon Fillet 500gr', 'description' => 'Fillet ikan salmon segar, kaya akan omega-3 dan baik untuk kesehatan.', 'price' => 250000, 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Cumi-Cumi Fresh 1kg', 'description' => 'Cumi-cumi segar yang siap diolah menjadi berbagai masakan lezat.', 'price' => 135000, 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Kepiting Jumbo 1kg', 'description' => 'Kepiting ukuran jumbo dengan daging yang tebal dan manis.', 'price' => 180000, 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Lobster Air Laut 1kg', 'description' => 'Lobster air laut segar dengan cita rasa premium.', 'price' => 450000, 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Kerang Hijau 1kg', 'description' => 'Kerang hijau segar dengan ukuran besar, cocok untuk berbagai hidangan laut.', 'price' => 75000, 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Ikan Kakap Merah 1kg', 'description' => 'Ikan kakap merah segar dengan daging yang lembut dan gurih.', 'price' => 160000, 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Ikan Tuna Steak 500gr', 'description' => 'Steak ikan tuna berkualitas tinggi, siap untuk dipanggang atau dibuat sashimi.', 'price' => 140000, 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Rajungan Segar 1kg', 'description' => 'Rajungan segar dengan rasa daging yang manis dan tekstur lembut.', 'price' => 130000, 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Teripang Kering 100gr', 'description' => 'Teripang kering berkualitas tinggi, cocok untuk kesehatan dan kuliner.', 'price' => 200000, 'image' => 'https://via.placeholder.com/150'],
+            // Baju Anak Kecil
+            ['name' => 'Kaos Anak Motif Kartun', 'description' => 'Kaos anak berbahan katun lembut dengan motif kartun yang lucu.', 'price' => 75000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Dress Anak Bunga', 'description' => 'Dress anak perempuan dengan motif bunga cantik dan bahan nyaman.', 'price' => 120000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Setelan Anak Casual', 'description' => 'Setelan anak dengan desain casual dan bahan yang nyaman dipakai.', 'price' => 135000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Baju Koko Anak', 'description' => 'Baju koko anak dengan bahan adem, cocok untuk acara formal dan ibadah.', 'price' => 95000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Baju Tidur Anak', 'description' => 'Baju tidur anak dengan bahan katun yang lembut dan nyaman.', 'price' => 80000, 'image' => 'https://via.placeholder.com/150'],
+
+            // Jaket Anak
+            ['name' => 'Jaket Hoodie Anak', 'description' => 'Jaket hoodie anak dengan bahan tebal dan nyaman untuk cuaca dingin.', 'price' => 150000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Jaket Bomber Anak', 'description' => 'Jaket bomber anak dengan desain trendy dan stylish.', 'price' => 175000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Jaket Jeans Anak', 'description' => 'Jaket jeans anak dengan bahan berkualitas dan tampilan keren.', 'price' => 200000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Jaket Winter Anak', 'description' => 'Jaket winter anak dengan bahan tebal dan desain stylish.', 'price' => 250000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Jaket Parasut Anak', 'description' => 'Jaket parasut anak yang ringan dan nyaman untuk aktivitas outdoor.', 'price' => 130000, 'image' => 'https://via.placeholder.com/150'],
+
+            // Tas Anak
+            ['name' => 'Tas Ransel Anak Kartun', 'description' => 'Tas ransel anak dengan motif kartun yang lucu dan bahan berkualitas.', 'price' => 100000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Tas Sekolah Anak', 'description' => 'Tas sekolah anak dengan banyak kompartemen dan bahan kuat.', 'price' => 125000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Tas Selempang Anak', 'description' => 'Tas selempang anak dengan desain simpel dan nyaman digunakan.', 'price' => 90000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Tas Trolley Anak', 'description' => 'Tas trolley anak yang praktis untuk membawa banyak barang.', 'price' => 175000, 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Tas Mini Anak', 'description' => 'Tas mini anak yang lucu dan cocok untuk membawa barang kecil.', 'price' => 80000, 'image' => 'https://via.placeholder.com/150'],
         ];
 
         foreach ($products as $product) {

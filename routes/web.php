@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserProductController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,7 +16,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -27,10 +28,15 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-
+// Product Admin 
 Route::prefix('product')->name('product.')->middleware('auth')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('index');
     Route::post('/', [ProductController::class, 'store'])->name('store');
     Route::post('{product}', [ProductController::class, 'update'])->name('update');
     Route::delete('/delete/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
 });
+
+
+// Product User 
+Route::get('/products', [UserProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [UserProductController::class, 'show'])->name('products.show');
