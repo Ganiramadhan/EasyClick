@@ -40,10 +40,13 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg',
+            'stock' => 'required|numeric|min:0',
+            'rating' => 'required|string',
+            'discount' => 'required|string|'
         ]);
 
-        $data = $request->only(['name', 'price', 'description']);
+        $data = $request->only(['name', 'price', 'description', 'stock', 'discount', 'rating']);
 
         if ($request->hasFile('image')) {
             $manager = new ImageManager(new GdDriver());
@@ -75,7 +78,10 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg',
+            'stock' => 'required|numeric|min:0',
+            'rating' => 'required|string',
+            'discount' => 'required|string|'
         ]);
 
         $data = $request->only(['name', 'price', 'description']);

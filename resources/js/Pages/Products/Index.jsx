@@ -68,6 +68,9 @@ export default function Products({ products, flash }) {
       setValue("price", product.price);
       setValue("description", product.description);
       setPreviewImage(product.image ? `/storage/${product.image}` : null);
+      setValue("stock", product.stock);
+      setValue("discount", product.discount);
+      setValue("rating", product.rating);
     } else {
       setPreviewImage(null);
     }
@@ -84,6 +87,9 @@ export default function Products({ products, flash }) {
     formData.append("name", data.name);
     formData.append("price", data.price);
     formData.append("description", data.description);
+    formData.append("stock", data.stock);
+    formData.append("discount", data.discount);
+    formData.append("rating", data.rating);
 
     if (data.image instanceof File) {
       formData.append("image", data.image);
@@ -115,18 +121,18 @@ export default function Products({ products, flash }) {
       width: "5%",
     },
     { name: "Name", selector: (row) => row.name, sortable: true, width: "25%" },
-    { name: "Description", selector: (row) => row.description, sortable: true, width: "30%" },
-    // {
-    //   name: "Image",
-    //   cell: (row) => (
-    //     <img
-    //       src={`/storage/${row.image}`}
-    //       alt={row.name}
-    //       className="w-16 h-16 object-cover rounded-md"
-    //     />
-    //   ),
-    //   width: "30%",
-    // },
+    { name: "Stock", selector: (row) => row.stock, sortable: true, width: "10%" },
+    {
+    name: "Image",
+      cell: (row) => (
+        <img
+          src={`/storage/${row.image}`}
+          alt={row.name}
+          className="w-16 h-16 object-cover rounded-md"
+        />
+      ),
+      width: "20%",
+    },
     { name: "Price", selector: (row) => formatRupiah(row.price), sortable: true, width: "20%" },
     {
       name: "Actions",
