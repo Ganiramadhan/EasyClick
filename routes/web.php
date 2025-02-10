@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserProductController;
@@ -40,3 +41,9 @@ Route::prefix('product')->name('product.')->middleware('auth')->group(function (
 // Product User 
 Route::get('/products', [UserProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [UserProductController::class, 'show'])->name('products.show');
+
+
+
+
+
+Route::post('/checkout', [PaymentController::class, 'checkout']);

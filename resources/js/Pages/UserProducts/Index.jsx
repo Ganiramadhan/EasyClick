@@ -1,18 +1,105 @@
-import { useState } from 'react';
-import UserLayout from '@/Layouts/UserLayout';
-import { Head } from '@inertiajs/react';
+import { useState, useEffect } from "react";
+import UserLayout from "@/Layouts/UserLayout";
+import { Head } from "@inertiajs/react";
 import { HiShoppingCart, HiOutlineEye, HiSearch, HiStar } from "react-icons/hi";
 import { HiOutlineStar } from "react-icons/hi2";
+import Swal from 'sweetalert2';
+
 
 export default function KidsClothing({ products, successMessage }) {
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState("");
+    const MIDTRANS_CLIENT_KEY = import.meta.env.VITE_MIDTRANS_CLIENT_KEY;
+
+
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
+        script.setAttribute("data-client-key", MIDTRANS_CLIENT_KEY);
+        script.async = true;
+        document.body.appendChild(script);
     
-    const filteredProducts = products.map((product, index) => ({
-        ...product,
-        discount: [15, 25, 30, 50][index % 4], // Dummy diskon
-        rating: (Math.random() * (5 - 4.5) + 4.5).toFixed(1), // Dummy rating antara 3.5 - 5
-        sold: Math.floor(Math.random() * 500) + 50 // Dummy terjual antara 50 - 550
-    })).filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()));
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
+
+
+    const paymentCheckout = async (product) => {
+        // console.log('PRODUCT DATA:', product);
+        try {
+            const response = await axios.post('/checkout', {
+                order_id: `order-${Date.now()}`,
+                product_id: product.id, 
+                description: product.description, 
+                customer_name: "Gani Ramadhan", 
+                customer_email: "guest@example.com",
+            });
+    
+            // console.log('Response Data:', response.data);
+            const data = response.data; 
+    
+            if (data.snap_token) {
+                window.snap.pay(data.snap_token, {
+                    onSuccess: function (result) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Payment Successful',
+                            text: 'Your payment was successful!',
+                        });
+                        // console.log(result); 
+                    },
+                    onPending: function (result) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Payment Pending',
+                            text: 'Your payment is pending!',
+                        });
+                        // console.log(result); 
+                    },
+                    onError: function (result) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Payment Failed',
+                            text: 'There was an error processing your payment.',
+                        });
+                        // console.log(result); 
+                    },
+                    onClose: function () {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Payment Incomplete',
+                            text: 'You have not completed the payment.',
+                        });
+                    },
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Payment Token Not Found',
+                    text: 'Token pembayaran tidak ditemukan!',
+                });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Terjadi kesalahan saat memproses pembayaran.',
+            });
+        }
+    };
+    
+    
+
+    const filteredProducts = products
+        .map((product, index) => ({
+            ...product,
+            discount: [15, 25, 30, 50][index % 4], // Dummy diskon
+            rating: (Math.random() * (5 - 4.5) + 4.5).toFixed(1), // Dummy rating antara 4.5 - 5
+            sold: Math.floor(Math.random() * 500) + 50, // Dummy terjual antara 50 - 550
+        }))
+        .filter((product) => product.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return (
         <UserLayout>
@@ -21,9 +108,7 @@ export default function KidsClothing({ products, successMessage }) {
                 <h1 className="text-2xl font-bold text-gray-800 mb-4">Pakaian Anak</h1>
 
                 {successMessage && (
-                    <div className="bg-green-100 text-green-700 p-3 rounded-md mb-4">
-                        {successMessage}
-                    </div>
+                    <div className="bg-green-100 text-green-700 p-3 rounded-md mb-4">{successMessage}</div>
                 )}
 
                 <div className="relative w-full mb-4">
@@ -49,7 +134,7 @@ export default function KidsClothing({ products, successMessage }) {
                             <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden transition-transform transform hover:scale-105">
                                 <div className="w-full h-48 relative">
                                     <img
-                                        src={product.image ? `/storage/${product.image}` : '/placeholder.png'}
+                                        src={product.image ? `/storage/${product.image}` : "/placeholder.png"}
                                         alt={product.name}
                                         className="w-full h-full object-cover"
                                     />
@@ -63,9 +148,7 @@ export default function KidsClothing({ products, successMessage }) {
                                     <p className="text-gray-500 line-through text-xs mt-1">
                                         Rp {Number(product.price * (100 / (100 - product.discount))).toLocaleString()}
                                     </p>
-                                    <p className="text-indigo-600 font-bold text-sm">
-                                        Rp {Number(product.price).toLocaleString()}
-                                    </p>
+                                    <p className="text-indigo-600 font-bold text-sm">Rp {Number(product.price).toLocaleString()}</p>
                                     <div className="flex justify-between items-center text-xs text-gray-600 mt-2">
                                         <div className="flex items-center">
                                             {[...Array(fullStars)].map((_, i) => (
@@ -80,7 +163,10 @@ export default function KidsClothing({ products, successMessage }) {
                                         <span className="ml-auto text-gray-600 text-xs">{product.sold}+ Terjual</span>
                                     </div>
                                     <div className="flex justify-between items-center mt-3">
-                                        <button className="flex items-center gap-1 text-xs sm:text-sm bg-green-500 text-white px-2 sm:px-3 py-1 rounded-md hover:bg-green-600 transition">
+                                        <button
+                                            onClick={() => paymentCheckout(product)}
+                                            className="flex items-center gap-1 text-xs sm:text-sm bg-green-500 text-white px-2 sm:px-3 py-1 rounded-md hover:bg-green-600 transition"
+                                        >
                                             <HiShoppingCart className="w-4 h-4" /> Beli
                                         </button>
                                         <button className="flex items-center gap-1 text-xs sm:text-sm bg-gray-200 text-gray-700 px-2 sm:px-3 py-1 rounded-md hover:bg-gray-300 transition">
