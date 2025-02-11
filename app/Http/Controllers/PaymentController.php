@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +24,6 @@ class PaymentController extends Controller
     public function checkout(Request $request)
     {
         $validated = $request->validate([
-            'order_id' => 'required|string',
             'total_price' => 'required|numeric|min:0',
             'customer_name' => 'required|string|max:255',
             'customer_email' => 'required|email|max:255',
@@ -31,23 +32,18 @@ class PaymentController extends Controller
             'items.*.price' => 'required|numeric|min:0',
             'items.*.quantity' => 'required|integer|min:1'
         ]);
-    
+
         try {
-            // Ambil daftar produk berdasarkan item yang dikirim
             $products = Product::whereIn('id', collect($validated['items'])->pluck('id'))->get();
-    
-            // Pastikan stok mencukupi
+
             foreach ($validated['items'] as $item) {
                 $product = $products->where('id', $item['id'])->first();
                 if (!$product || $product->stock < $item['quantity']) {
                     return response()->json(['error' => "Produk {$product->name} stok tidak mencukupi"], 400);
                 }
             }
-    
-            // Buat detail transaksi untuk Midtrans
+
             $itemDetails = [];
-            $description = [];
-    
             foreach ($validated['items'] as $item) {
                 $product = $products->where('id', $item['id'])->first();
                 $itemDetails[] = [
@@ -56,12 +52,11 @@ class PaymentController extends Controller
                     'quantity' => $item['quantity'],
                     'name' => $product->name
                 ];
-                $description[] = "{$item['quantity']}x {$product->name}";
             }
-    
+
             $transaction = Snap::createTransaction([
                 'transaction_details' => [
-                    'order_id' => $validated['order_id'],
+                    'order_id' => strtoupper(uniqid('ORD-')),
                     'gross_amount' => $validated['total_price'],
                 ],
                 'customer_details' => [
@@ -70,31 +65,34 @@ class PaymentController extends Controller
                 ],
                 'item_details' => $itemDetails
             ]);
-    
+
             if (!$transaction) {
                 throw new \Exception('Failed to create transaction');
             }
-    
-            // Simpan transaksi ke database dan kurangi stok
-            DB::transaction(function () use ($products, $validated) {
+
+            DB::transaction(function () use ($products, $validated, $transaction) {
+                $order = Order::create([
+                    'user_id' => 1, 
+                    'order_num' => strtoupper(uniqid('ORD-')),
+                    'total_price' => $validated['total_price'],
+                    'status' => 'paid'
+                ]);
+
                 foreach ($validated['items'] as $item) {
                     $product = $products->where('id', $item['id'])->first();
-                    
-                    DB::table('orders')->insert([
-                        'order_num' => strtoupper(uniqid('ORD-')),
-                        'product_name' => $product->name,
+
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $product->id,
                         'quantity' => $item['quantity'],
-                        'status' => 'pending',
-                        'created_at' => now(),
-                        'updated_at' => now(),
+                        'price' => $item['price']
                     ]);
-    
-                    // Kurangi stok dan tambah jumlah terjual
+
                     $product->decrement('stock', $item['quantity']);
                     $product->increment('sold', $item['quantity']);
                 }
             });
-    
+
             return response()->json([
                 'snap_token' => $transaction->token
             ]);
@@ -104,8 +102,6 @@ class PaymentController extends Controller
             return response()->json(['error' => 'Payment processing failed', 'message' => $e->getMessage()], 500);
         }
     }
-    
-    
 
     public function cart()
     {

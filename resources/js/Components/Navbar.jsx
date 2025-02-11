@@ -28,7 +28,7 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
                 <div className="flex justify-between items-center py-4">
                     {/* Logo */}
-                    <div className="text-2xl font-extrabold text-green-700 tracking-wide">Kian'Store</div>
+                    <div className="text-2xl font-extrabold text-green-700 tracking-wide">Ganipedia</div>
 
                     {/* Menu (Desktop) */}
                     <div className="hidden lg:flex space-x-8">

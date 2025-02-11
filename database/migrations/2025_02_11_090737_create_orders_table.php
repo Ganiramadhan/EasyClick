@@ -9,19 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('order_num');
-            // $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
-            $table->string('product_name');
-            $table->decimal('amount', 10, 2);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->default(1);
+            $table->string('order_num')->unique();
+            $table->decimal('total_price', 10, 2)->default(0); 
             $table->string('status')->default('pending');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
-
 
     /**
      * Reverse the migrations.
