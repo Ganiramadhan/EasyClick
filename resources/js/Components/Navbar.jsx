@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { HiOutlineMenu, HiOutlineX, HiOutlineShoppingCart, HiOutlineUser } from "react-icons/hi";
-import Cart from "../Components/Cart";
+import { useCart } from '@/context/CartContext';
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const [scrolling, setScrolling] = useState(false);
-    const [active, setActive] = useState("Products");
-    const [cartOpen, setCartOpen] = useState(false);
+    const { cart } = useCart();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -16,7 +15,13 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const menuItems = ["Home", "Products", "Deals", "Categories", "Contact"];
+    const menuItems = [
+        { name: "Home", path: "/" },
+        { name: "Products", path: "/products" },
+        { name: "Deals", path: "/deals" },
+        { name: "Categories", path: "/categories" },
+        { name: "Contact", path: "/contact" }
+    ];
 
     return (
         <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolling ? "bg-white shadow-lg" : "bg-transparent"}`}>
@@ -28,21 +33,25 @@ export default function Navbar() {
                     {/* Menu (Desktop) */}
                     <div className="hidden lg:flex space-x-8">
                         {menuItems.map((item) => (
-                            <a 
-                                key={item} 
-                                href="#" 
-                                onClick={() => setActive(item)}
-                                className={`text-gray-800 text-lg font-medium transition duration-300 px-3 py-2 rounded-md ${active === item ? "text-green-700 font-semibold border-b-2 border-green-600" : "hover:text-green-600"}`}
-                            >
-                                {item}
+                            <a key={item.name} href={item.path} className="text-gray-800 text-lg font-medium transition duration-300 px-3 py-2 rounded-md hover:text-green-600">
+                                {item.name}
                             </a>
                         ))}
                     </div>
 
-                    {/* Icons */}
-                    <div className="hidden lg:flex space-x-6">
-                        <HiOutlineShoppingCart className="w-7 h-7 text-gray-800 cursor-pointer hover:text-green-700 transition duration-300" onClick={() => setCartOpen(true)} />
-                        <HiOutlineUser className="w-7 h-7 text-gray-800 cursor-pointer hover:text-green-700 transition duration-300" />
+                    {/* Ikon Keranjang & User */}
+                    <div className="hidden lg:flex space-x-6 relative">
+                        <a href="/cart" className="relative">
+                            <HiOutlineShoppingCart className="w-7 h-7 text-gray-800 cursor-pointer hover:text-green-700 transition duration-300" />
+                            {cart.length > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                    {cart.length}
+                                </span>
+                            )}
+                        </a>
+                        <a href="/profile">
+                            <HiOutlineUser className="w-7 h-7 text-gray-800 cursor-pointer hover:text-green-700 transition duration-300" />
+                        </a>
                     </div>
 
                     {/* Menu Button (Mobile) */}
@@ -58,23 +67,26 @@ export default function Navbar() {
                             <HiOutlineX className="w-8 h-8" />
                         </button>
                         {menuItems.map((item) => (
-                            <a 
-                                key={item} 
-                                href="#" 
-                                onClick={() => { setActive(item); setOpen(false); }}
-                                className={`block text-lg font-medium py-3 px-4 rounded-md transition duration-300 ${active === item ? "bg-green-100 text-green-700 font-semibold" : "hover:bg-gray-100 text-gray-800"}`}
-                            >
-                                {item}
+                            <a key={item.name} href={item.path} onClick={() => setOpen(false)} className="block text-lg font-medium py-3 px-4 rounded-md transition duration-300 hover:bg-gray-100 text-gray-800">
+                                {item.name}
                             </a>
                         ))}
-                        <div className="flex space-x-6 mt-6 border-t pt-4">
-                            <HiOutlineShoppingCart className="w-7 h-7 text-gray-800 cursor-pointer hover:text-green-700 transition duration-300" onClick={() => setCartOpen(true)} />
-                            <HiOutlineUser className="w-7 h-7 text-gray-800 cursor-pointer hover:text-green-700 transition duration-300" />
+                        <div className="flex space-x-6 mt-6 border-t pt-4 relative">
+                            <a href="/products" onClick={() => setOpen(false)} className="relative">
+                                <HiOutlineShoppingCart className="w-7 h-7 text-gray-800 cursor-pointer hover:text-green-700 transition duration-300" />
+                                {cart.length > 0 && (
+                                    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                        {cart.length}
+                                    </span>
+                                )}
+                            </a>
+                            <a href="/profile">
+                                <HiOutlineUser className="w-7 h-7 text-gray-800 cursor-pointer hover:text-green-700 transition duration-300" />
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-            {cartOpen && <Cart onClose={() => setCartOpen(false)} />}
         </nav>
     );
 }

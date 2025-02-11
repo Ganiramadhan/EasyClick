@@ -47,3 +47,4 @@ Route::get('/products/{product}', [UserProductController::class, 'show'])->name(
 
 
 Route::post('/checkout', [PaymentController::class, 'checkout']);
+Route::get('/cart', [PaymentController::class, 'cart']);
