@@ -1,11 +1,21 @@
 import { useState } from "react";
-import { Typography, Button, Card } from "@material-tailwind/react";
+import { usePage, router } from "@inertiajs/react";
+import { Button, Card } from "@material-tailwind/react";
 import { FiMenu, FiBell, FiMail } from "react-icons/fi";
-import { FaBox, FaMoneyBillWave, FaUsers, FaSignOutAlt, FaTachometerAlt } from "react-icons/fa";
+import { FaBox, FaMoneyBillWave, FaUsers, FaSignOutAlt, FaTachometerAlt, FaUser } from "react-icons/fa";
 
 export default function AppLayout({ header, children }) {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const { url } = usePage();
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+
+  const navigate = (path) => {
+    router.visit(path);
+  };
+
+  const logout = () => {
+    router.post("/logout");
+  };
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -23,22 +33,43 @@ export default function AppLayout({ header, children }) {
         </div>
 
         <ul className="space-y-2">
-          <li className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 cursor-pointer transition-all text-gray-700">
+          <li
+            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${url === "/" ? "bg-blue-500 text-white" : "hover:bg-gray-100 text-gray-700"}`}
+            onClick={() => navigate("/")}
+          >
             <FaTachometerAlt /> Dashboard
           </li>
-          <li className="flex items-center gap-3 p-3 rounded-lg bg-blue-500 text-white cursor-pointer hover:bg-blue-600 transition-all">
-            <FaBox /> Product
+          <li
+            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${url.startsWith("/product") ? "bg-blue-500 text-white" : "hover:bg-gray-100 text-gray-700"}`}
+            onClick={() => navigate("/product")}
+          >
+            <FaBox /> Products
           </li>
-          <li className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 cursor-pointer transition-all text-gray-700">
-            <FaMoneyBillWave /> Transaction
+          <li
+            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${url.startsWith("/order") ? "bg-blue-500 text-white" : "hover:bg-gray-100 text-gray-700"}`}
+            onClick={() => navigate("/order")}
+          >
+            <FaMoneyBillWave /> Orders
           </li>
-          <li className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 cursor-pointer transition-all text-gray-700">
+          <li
+            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${url.startsWith("/user") ? "bg-blue-500 text-white" : "hover:bg-gray-100 text-gray-700"}`}
+            onClick={() => navigate("/user")}
+          >
             <FaUsers /> User
           </li>
         </ul>
         <div className="mt-6 border-t pt-4">
           <ul className="space-y-2">
-            <li className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 cursor-pointer transition-all text-gray-700">
+            <li
+              className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${url.startsWith("/profile") ? "bg-blue-500 text-white" : "hover:bg-gray-100 text-gray-700"}`}
+              onClick={() => navigate("/profile")}
+            >
+              <FaUser /> Profile
+            </li>
+            <li 
+              className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 cursor-pointer transition-all text-gray-700"
+              onClick={logout}
+            >
               <FaSignOutAlt /> Logout
             </li>
           </ul>

@@ -4,6 +4,8 @@ import { FaTrash } from "react-icons/fa";
 import UserLayout from "@/Layouts/UserLayout";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { Head } from '@inertiajs/react';
+
 
 const CartPage = () => {
     const { cart, removeFromCart, increaseQuantity, decreaseQuantity } = useCart();
@@ -11,6 +13,7 @@ const CartPage = () => {
     const [isRemovingMultiple, setIsRemovingMultiple] = useState(false);
     const MIDTRANS_CLIENT_KEY = import.meta.env.VITE_MIDTRANS_CLIENT_KEY;
 
+    // Midtrans Config 
     useEffect(() => {
         const script = document.createElement("script");
         script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
@@ -24,31 +27,26 @@ const CartPage = () => {
     }, []);
 
     // Handle Select All
-    const handleSelectAll = () => {
+    const selectAllItem = () => {
         if (selectedItems.length === cart.length) {
-            setSelectedItems([]); // Jika semua sudah dipilih, hapus semua
+            setSelectedItems([]); 
         } else {
-            setSelectedItems(cart.map(item => item.id)); // Pilih semua item
+            setSelectedItems(cart.map(item => item.id));
         }
     };
 
-    // Handle Select Item
-    const handleSelectItem = (itemId) => {
+    const selectItem = (itemId) => {
         setSelectedItems(prev =>
             prev.includes(itemId) ? prev.filter(id => id !== itemId) : [...prev, itemId]
         );
     };
 
-    // Urutkan item dari yang terbaru ke yang lama
     const sortedCart = [...cart].sort((a, b) => b.id - a.id);
 
-    // Filter produk yang dipilih
     const selectedProducts = sortedCart.filter(item => selectedItems.includes(item.id));
 
-    // Hitung total harga produk yang dipilih
     const totalHarga = selectedProducts.reduce((total, item) => total + item.finalPrice * item.quantity, 0);
 
-    // Hapus banyak item sekaligus tanpa konfirmasi
     const handleRemoveSelected = () => {
         if (selectedItems.length === 0) return;
 
@@ -118,6 +116,9 @@ const CartPage = () => {
     };
 
     return (
+        <>
+        <Head title="Keranjang Belanja | Toko Online">            
+        </Head>
         <UserLayout>
             <div className="max-w-5xl mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold text-center mb-6">🛒 Keranjang Belanja</h1>
@@ -131,7 +132,7 @@ const CartPage = () => {
                                 <input
                                     type="checkbox"
                                     checked={selectedItems.length === cart.length}
-                                    onChange={handleSelectAll}
+                                    onChange={selectAllItem}
                                     className="w-5 h-5 accent-green-500"
                                 />
                                 <label className="ml-2 text-gray-700">Pilih Semua</label>
@@ -143,14 +144,18 @@ const CartPage = () => {
                                         <input
                                             type="checkbox"
                                             checked={selectedItems.includes(item.id)}
-                                            onChange={() => handleSelectItem(item.id)}
+                                            onChange={() => selectItem(item.id)}
                                             className="mr-4 w-5 h-5 accent-green-500"
                                         />
                                         <img src={`/storage/${item.image}`} alt={item.name} className="w-20 h-20 object-cover rounded-md" />
                                         <div className="flex-1 ml-4">
                                             <h3 className="text-lg font-semibold">{item.name}</h3>
                                             <div className="flex items-center space-x-2">
-                                                {item.discount > 0 && <p className="text-red-500 line-through text-sm">Rp {item.price.toLocaleString("id-ID")}</p>}
+                                            {item.discount > 0 && (
+                                                <p className="text-red-500 line-through text-sm">
+                                                    Rp {parseInt(item.price).toLocaleString("id-ID")}
+                                                </p>
+                                                )}
                                                 <p className="text-sm">Rp {item.finalPrice.toLocaleString("id-ID")}</p>
                                             </div>
                                         </div>
@@ -179,6 +184,8 @@ const CartPage = () => {
                 </div>
             </div>
         </UserLayout>
+        </>
+
     );
 };
 

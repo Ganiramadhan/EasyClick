@@ -1,6 +1,6 @@
 import Navbar from '@/Components/Navbar';
 
-export default function GuestLayout({ children }) {
+export default function UserLayout({ children }) {
     return (
         <div className="min-h-screen bg-gray-50">
             <Navbar />
