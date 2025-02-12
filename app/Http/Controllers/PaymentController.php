@@ -72,7 +72,7 @@ class PaymentController extends Controller
 
             DB::transaction(function () use ($products, $validated, $transaction) {
                 $order = Order::create([
-                    'user_id' => 1, 
+                    'user_id' => 22, 
                     'order_num' => strtoupper(uniqid('ORD-')),
                     'total_price' => $validated['total_price'],
                     'status' => 'paid'

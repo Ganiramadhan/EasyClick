@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
+
 
 class RegisteredUserController extends Controller
 {
@@ -40,6 +44,9 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'user',
+            'remember_token' => Str::random(60), 
+            'email_verified_at' => Carbon::now(), 
         ]);
 
         event(new Registered($user));

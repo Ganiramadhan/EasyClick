@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+
 
 
 class UserProductController extends Controller
@@ -14,13 +16,21 @@ class UserProductController extends Controller
      */
     public function index()
     {
+        // Retrieve all products
         $products = Product::all();
 
+        // Check if the user is authenticated
+        $isAuthenticated = Auth::user();
+
+        // Pass the data to the Inertia view
         return Inertia::render('UserProducts/Index', [
             'products' => $products,
-            'successMessage' => session('successMessage') 
+            'successMessage' => session('successMessage'),
+            'isAuthenticated' => $isAuthenticated, 
         ]);
     }
+
+    
 
     /**
      * Show the form for creating a new resource.

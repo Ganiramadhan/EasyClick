@@ -6,7 +6,8 @@ import { FaBox, FaMoneyBillWave, FaUsers, FaSignOutAlt, FaTachometerAlt, FaUser 
 
 export default function AppLayout({ header, children }) {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const { url } = usePage();
+  const { url, props } = usePage();
+  const user = props.auth.user;
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
   const navigate = (path) => {
@@ -34,8 +35,8 @@ export default function AppLayout({ header, children }) {
 
         <ul className="space-y-2">
           <li
-            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${url === "/" ? "bg-blue-500 text-white" : "hover:bg-gray-100 text-gray-700"}`}
-            onClick={() => navigate("/")}
+            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${url === "/dashboard" ? "bg-blue-500 text-white" : "hover:bg-gray-100 text-gray-700"}`}
+            onClick={() => navigate("/dashboard")}
           >
             <FaTachometerAlt /> Dashboard
           </li>
@@ -87,6 +88,17 @@ export default function AppLayout({ header, children }) {
           <div className="flex items-center space-x-4">
             <FiMail className="cursor-pointer text-gray-600 hover:text-blue-500 transition-all" size={20} />
             <FiBell className="cursor-pointer text-gray-600 hover:text-blue-500 transition-all" size={20} />
+            {/* User Avatar */}
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/profile")}> 
+            <span className="text-gray-700 font-medium">{user.name}</span>
+              {user.avatar ? (
+                <img src={user.avatar} alt="User Avatar" className="w-10 h-10 rounded-full border border-gray-300" />
+              ) : (
+                <div className="w-10 h-10 flex items-center justify-center bg-gray-300 text-white text-lg font-semibold rounded-full">
+                  {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

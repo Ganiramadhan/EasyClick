@@ -7,7 +7,7 @@ import { FaBoxOpen, FaShoppingCart, FaUser } from "react-icons/fa";
 
 Chart.register(...registerables);
 
-export default function Dashboard({ totalOrders, totalProducts }) {
+export default function Dashboard({ totalOrders, totalProducts, userName }) {
 
   // Data untuk grafik
   const chartData = {
@@ -39,7 +39,7 @@ export default function Dashboard({ totalOrders, totalProducts }) {
       {/* Welcome Message */}
       <div className="p-6 text-gray-800 text-lg font-medium flex items-center gap-2">
         <FaUser className="text-blue-500 text-2xl" />
-        <span>Selamat datang, Gani Ramadhan!</span>
+        <span>Welcome back, {userName} !</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
