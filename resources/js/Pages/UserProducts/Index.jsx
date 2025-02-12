@@ -5,7 +5,7 @@ import { HiShoppingCart, HiOutlineStar, HiSearch, HiStar } from "react-icons/hi"
 import { useCart } from '@/context/CartContext';
 import Swal from 'sweetalert2';
 
-    export default function KidsClothing({ products, successMessage, isAuthenticated }) {
+    export default function KidsClothing({ products, successMessage, isAuthenticated, user }) {
         const [searchTerm, setSearchTerm] = useState("");
         const MIDTRANS_CLIENT_KEY = import.meta.env.VITE_MIDTRANS_CLIENT_KEY;
         const [loading, setLoading] = useState(null);
@@ -41,10 +41,12 @@ import Swal from 'sweetalert2';
                 });
                 return;
             }
-
+        
             setLoading(product.id);
+            
+            // Pastikan menambahkan item dengan user ID
             setTimeout(() => {
-                addToCart(product);
+                addToCart({ ...product, userId: user.id });
                 setLoading(null);
                 Swal.fire({
                     icon: 'success',
@@ -55,6 +57,7 @@ import Swal from 'sweetalert2';
                 });
             }, 1000);
         };
+        
 
         return (
             <UserLayout>

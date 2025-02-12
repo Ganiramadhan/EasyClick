@@ -21,12 +21,14 @@ class UserProductController extends Controller
 
         // Check if the user is authenticated
         $isAuthenticated = Auth::user();
+        $user = Auth::user();
 
         // Pass the data to the Inertia view
         return Inertia::render('UserProducts/Index', [
             'products' => $products,
             'successMessage' => session('successMessage'),
             'isAuthenticated' => $isAuthenticated, 
+            'user' => $user, 
         ]);
     }
 

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Midtrans\Config;
 use Midtrans\Snap;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+
 
 class PaymentController extends Controller
 {
@@ -105,6 +107,15 @@ class PaymentController extends Controller
 
     public function cart()
     {
-        return Inertia::render('UserProducts/Cart');
+        // Check if the user is authenticated
+        $user = Auth::user();
+
+        // Pass the data to the Inertia view
+        return Inertia::render('UserProducts/Cart', [
+            'successMessage' => session('successMessage'),
+            'user' => $user, 
+        ]);
     }
+
+
 }
