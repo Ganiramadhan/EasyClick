@@ -1,4 +1,5 @@
 import Navbar from '@/Components/Navbar';
+import Carousel from '@/Pages/UserProducts/Carousel';
 
 export default function UserLayout({ children }) {
     return (
