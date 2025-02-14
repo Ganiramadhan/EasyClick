@@ -6,6 +6,7 @@ EasyClick is a web-based e-commerce platform for selling fish with an integrated
 - 📖 **Product Catalog** with descriptions and images
 - 🛒 **Shopping Cart** and checkout process
 - 💳 **Payment Gateway Integration** (Midtrans/Xendit)
+- 📦 **Shipping Cost Calculation (Ongkir Checker)**
 - 📦 **Order & Shipping Management**
 - 🔐 **User Authentication** (Login/Register with Google)
 - 📊 **Admin Dashboard** for product & order management
@@ -13,7 +14,7 @@ EasyClick is a web-based e-commerce platform for selling fish with an integrated
 ---
 
 ## 🛠️ Technologies Used
-- **Backend:** Laravel 10
+- **Backend:** Laravel 11
 - **Frontend:** React with Inertia.js and Tailwind Css
 - **Database:** MySQL
 - **Payment Gateway:** Midtrans/Xendit
@@ -125,8 +126,4 @@ To test the API, import the **EasyClick.postman_collection.json** file into Post
 ## 📄 License
 This project is licensed under the **MIT License**.
 
----
-
-## 📞 Contact
-If you have any questions or issues, please contact us at [support@easyclick.com](mailto:support@easyclick.com).
 
