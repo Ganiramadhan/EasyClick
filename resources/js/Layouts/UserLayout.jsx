@@ -1,5 +1,5 @@
 import Navbar from '@/Components/Navbar';
-import Carousel from '@/Pages/UserProducts/Carousel';
+import Footer from '@/Pages/UserProducts/Footer';
 
 export default function UserLayout({ children }) {
     return (
@@ -8,6 +8,7 @@ export default function UserLayout({ children }) {
             <main className="pt-20 pb-10 px-4 sm:px-8 lg:px-12">
                 {children}
             </main>
+            <Footer/>
         </div>
     );
 }

@@ -21,6 +21,13 @@ Route::get('/', function () {
     ]);
 });
 
+// Halaman Not Found (404)
+Route::fallback(function () {
+    return Inertia::render('NotFound', [
+        'status' => 404,
+    ]);
+});
+
 // Dashboard & Admin Routes (hanya untuk admin)
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     // Dashboard Admin

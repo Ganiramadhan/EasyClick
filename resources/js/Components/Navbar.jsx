@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { HiOutlineMenu, HiOutlineX, HiOutlineShoppingCart, HiOutlineLogout, HiOutlineLogin, HiUserCircle } from "react-icons/hi";
+import { HiOutlineMenu, HiOutlineX, HiOutlineShoppingCart, HiOutlineLogin, HiUserCircle } from "react-icons/hi";
 import { useCart } from '@/context/CartContext';
 import { Link, usePage, router } from '@inertiajs/react';
 
@@ -28,10 +28,10 @@ export default function Navbar() {
     ];
 
     return (
-        <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolling ? "bg-white shadow-md" : "bg-transparent"}`}>
+        <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolling ? "bg-white shadow-lg" : "bg-transparent"}`}>
             <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex justify-between items-center py-4">
                 {/* Logo */}
-                <div className="text-2xl font-extrabold text-green-700 tracking-wide">Ganipedia</div>
+                <div className="text-2xl font-extrabold text-green-700 tracking-wide">EasyClick</div>
 
                 {/* Menu (Desktop) */}
                 <div className="hidden lg:flex space-x-8">

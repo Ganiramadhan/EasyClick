@@ -5,6 +5,9 @@ import { HiShoppingCart, HiOutlineStar, HiSearch, HiStar } from "react-icons/hi"
 import { useCart } from '@/context/CartContext';
 import Swal from 'sweetalert2';
 import Carousel from "./Carousel";
+import Promo from "./BestSellerProduct";
+import Feedback from "./Feedback";
+import Footer from "./Footer";
 
 export default function KidsClothing({ products, successMessage, isAuthenticated }) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -28,7 +31,7 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleAddToCart = (product) => {
+    const addCartItems = (product) => {
         if (!isAuthenticated) {
             Swal.fire({
                 icon: 'warning',
@@ -63,15 +66,28 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
         "https://i.pinimg.com/736x/8a/b6/1d/8ab61d9fd080705516c3bbc248fd021b.jpg",
     ];
 
+
     return (
         <UserLayout>
             <Head title="Kids Clothing" />
             <Carousel images={images} />
             <div className="max-w-6xl mx-auto px-4 py-6">
-                <h1 className="text-2xl font-bold text-gray-800 mb-4">Kids Clothing</h1>
+            <Promo products={products}/>
                 {successMessage && (
                     <div className="bg-green-100 text-green-700 p-3 rounded-md mb-4">{successMessage}</div>
                 )}
+                {/* Header Best Seller Product */}
+                <div className="text-center mb-10">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                        All Products
+                    </h2>
+                    <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">
+                        Explore our entire collection of carefully crafted products
+                    </p>
+                    <div className="mt-6 flex justify-center">
+                        <div className="w-16 h-1 bg-green-600 rounded-full"></div>
+                    </div>
+                </div>
                 <div className="relative w-full mb-4">
                     <HiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
                     <input
@@ -88,25 +104,28 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                     {filteredProducts.map((product) => {
                         const hasDiscount = product.discount > 0;
-                        const discountPercent = hasDiscount ? `Discount ${product.discount}%` : "";
+                        const discountPercent = hasDiscount ? `${product.discount}%` : "";
                         const discountedPrice = hasDiscount ? product.price - (product.price * (product.discount / 100)) : product.price;
                         const formattedRating = parseFloat(product.rating).toFixed(1);
+                        const showSold = product.rating >= 4; // Hanya tampilkan terjual jika rating >= 4
+
                         return (
-                            <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden flex flex-col justify-between transform hover:scale-105 transition-transform">
+                            <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden flex flex-col justify-between">
                                 <div>
-                                    <div className="w-full h-40 sm:h-48 relative">
+                                    {/* Gambar dengan animasi hover */}
+                                    <div className="w-full h-32 sm:h-48 relative overflow-hidden"> {/* Tinggi gambar diperkecil di mode mobile */}
                                         <img
                                             src={product.image ? `/storage/${product.image}` : "/placeholder.png"}
                                             alt={product.name}
-                                            className="w-full h-full object-cover"
+                                            className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300"
                                         />
                                         {hasDiscount && (
-                                            <span className="absolute top-2 right-2 bg-red-400 bg-opacity-90 text-white text-xs font-semibold px-2 py-1 rounded-md shadow-md">
+                                            <span className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">
                                                 {discountPercent}
                                             </span>
                                         )}
                                     </div>
-                                    <div className="p-3 sm:p-4 flex-grow">
+                                    <div className="p-2 sm:p-4 flex-grow"> {/* Padding diperkecil di mode mobile */}
                                         <h2 className="text-xs sm:text-sm font-semibold text-gray-800 truncate">{product.name}</h2>
                                         <p className="text-gray-600 text-xs mt-1 line-clamp-2">{product.description}</p>
                                         {hasDiscount && (
@@ -114,7 +133,7 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
                                                 Rp {Number(product.price).toLocaleString()}
                                             </p>
                                         )}
-                                        <p className="text-indigo-600 font-bold text-sm sm:text-base">
+                                        <p className="text-green-600 font-bold text-sm sm:text-base">
                                             Rp {Number(discountedPrice).toLocaleString()}
                                         </p>
                                         <div className="flex justify-between items-center text-xs text-gray-600 mt-2">
@@ -127,15 +146,17 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
                                                 ))}
                                                 <span className="ml-2">{formattedRating}</span>
                                             </div>
-                                            <span className="ml-auto text-gray-600 text-xs">{product.sold}+ terjual</span>
+                                            {showSold && (
+                                                <span className="ml-auto text-gray-600 text-xs hidden sm:inline">{product.sold}+ terjual</span>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-3 sm:p-4 border-t flex justify-between items-center mt-auto">
-                                    <span className="text-xs sm:text-sm font-semibold text-gray-700">Stock: {product.stock || Math.floor(Math.random() * 50)}</span>
+                                <div className="p-2 sm:p-4 border-t flex justify-between items-center mt-auto"> {/* Padding diperkecil di mode mobile */}
+                                    <span className="hidden sm:inline text-xs sm:text-sm font-semibold text-gray-700">Stock: {product.stock || Math.floor(Math.random() * 50)}</span>
                                     <button
-                                        onClick={() => handleAddToCart(product)}
-                                        className="px-3 py-1 flex items-center justify-center bg-green-600 text-white rounded-md hover:bg-green-700 transition-all text-xs sm:text-sm font-semibold disabled:opacity-50"
+                                        onClick={() => addCartItems(product)}
+                                        className="px-2 py-1 sm:px-3 sm:py-2 flex items-center justify-center bg-green-600 text-white rounded-md hover:bg-green-700 transition-all text-xs sm:text-sm font-semibold disabled:opacity-50"
                                         disabled={loading === product.id}
                                     >
                                         {loading === product.id ? (
@@ -147,7 +168,10 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
                                                 Loading...
                                             </span>
                                         ) : (
-                                            <><HiShoppingCart className="w-4 h-4 mr-1" /> Add to cart</>
+                                            <>
+                                                <HiShoppingCart className="w-4 h-4 sm:mr-1" />
+                                                <span className="hidden sm:inline">Add to cart</span>
+                                            </>
                                         )}
                                     </button>
                                 </div>
@@ -155,6 +179,7 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
                         );
                     })}
                 </div>
+                <Feedback/>
             </div>
         </UserLayout>
     );
