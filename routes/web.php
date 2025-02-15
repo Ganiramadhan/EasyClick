@@ -12,14 +12,14 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
 // Halaman Not Found (404)
 Route::fallback(function () {
@@ -27,6 +27,9 @@ Route::fallback(function () {
         'status' => 404,
     ]);
 });
+
+Route::get('/', [UserProductController::class, 'index'])->name('products.index');
+
 
 // Dashboard & Admin Routes (hanya untuk admin)
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
@@ -58,8 +61,8 @@ Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirectToGoo
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 // Product User (akses umum)
-Route::get('/products', [UserProductController::class, 'index'])->name('products.index');
-Route::get('/products/{product}', [UserProductController::class, 'show'])->name('products.show');
+// Route::get('/products', [UserProductController::class, 'index'])->name('products.index');
+// Route::get('/products/{product}', [UserProductController::class, 'show'])->name('products.show');
 
 // Payment & Cart (akses umum)
 Route::post('/checkout', [PaymentController::class, 'checkout']);

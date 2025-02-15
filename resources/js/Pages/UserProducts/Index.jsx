@@ -8,6 +8,7 @@ import Carousel from "./Carousel";
 import Promo from "./BestSellerProduct";
 import Feedback from "./Feedback";
 import Footer from "./Footer";
+import Service from "./Services";
 
 export default function KidsClothing({ products, successMessage, isAuthenticated }) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -69,7 +70,7 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
 
     return (
         <UserLayout>
-            <Head title="Kids Clothing" />
+            <Head title="EasyClick" />
             <Carousel images={images} />
             <div className="max-w-6xl mx-auto px-4 py-6">
             <Promo products={products}/>
@@ -107,25 +108,25 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
                         const discountPercent = hasDiscount ? `${product.discount}%` : "";
                         const discountedPrice = hasDiscount ? product.price - (product.price * (product.discount / 100)) : product.price;
                         const formattedRating = parseFloat(product.rating).toFixed(1);
-                        const showSold = product.rating >= 4; // Hanya tampilkan terjual jika rating >= 4
+                        const showSold = product.rating >= 4; 
 
                         return (
                             <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden flex flex-col justify-between">
                                 <div>
                                     {/* Gambar dengan animasi hover */}
-                                    <div className="w-full h-32 sm:h-48 relative overflow-hidden"> {/* Tinggi gambar diperkecil di mode mobile */}
-                                        <img
+                                    <div className="w-full h-32 sm:h-56 relative overflow-hidden">
+                                    <img
                                             src={product.image ? `/storage/${product.image}` : "/placeholder.png"}
                                             alt={product.name}
-                                            className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300"
-                                        />
+                                            className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300" 
+                                            />
                                         {hasDiscount && (
                                             <span className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">
                                                 {discountPercent}
                                             </span>
                                         )}
                                     </div>
-                                    <div className="p-2 sm:p-4 flex-grow"> {/* Padding diperkecil di mode mobile */}
+                                    <div className="p-2 sm:p-4 flex-grow"> 
                                         <h2 className="text-xs sm:text-sm font-semibold text-gray-800 truncate">{product.name}</h2>
                                         <p className="text-gray-600 text-xs mt-1 line-clamp-2">{product.description}</p>
                                         {hasDiscount && (
@@ -152,7 +153,7 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-2 sm:p-4 border-t flex justify-between items-center mt-auto"> {/* Padding diperkecil di mode mobile */}
+                                <div className="p-2 sm:p-4 border-t flex justify-between items-center mt-auto"> 
                                     <span className="hidden sm:inline text-xs sm:text-sm font-semibold text-gray-700">Stock: {product.stock || Math.floor(Math.random() * 50)}</span>
                                     <button
                                         onClick={() => addCartItems(product)}
@@ -180,6 +181,7 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
                     })}
                 </div>
                 <Feedback/>
+                <Service/>
             </div>
         </UserLayout>
     );

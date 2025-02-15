@@ -36,7 +36,7 @@ export default function Carousel({ images }) {
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-30 text-white text-center p-4">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold drop-shadow-2xl">EasyClick</h2>
                 <p className="text-xl sm:text-2xl lg:text-3xl mt-4 drop-shadow-2xl">Shopping Made Simple</p>
-                <button className="mt-6 bg-green-500 hover:bg-green-600 px-8 py-3 rounded-full text-white font-semibold transition-all duration-300 shadow-2xl hover:shadow-3xl">
+                <button className="mt-6 bg-green-500 hover:bg-green-600 px-6 py-2 sm:px-8 sm:py-3 rounded-full text-white font-semibold transition-all duration-300 shadow-2xl hover:shadow-3xl text-sm sm:text-base">
                     Shop Now
                 </button>
             </div>
@@ -44,13 +44,13 @@ export default function Carousel({ images }) {
             {/* Tombol Navigasi (Prev/Next) */}
             <button 
                 onClick={prevSlide} 
-                className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 p-2 sm:p-3 rounded-full text-gray-800 hover:bg-opacity-100 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <HiChevronLeft className="w-6 h-6 sm:w-8 sm:h-8" />
+                className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 p-1 sm:p-2 rounded-full text-gray-800 hover:bg-opacity-100 transition-all duration-300 shadow-lg hover:shadow-xl">
+                <HiChevronLeft className="w-4 h-4 sm:w-6 sm:h-6" />
             </button>
             <button 
                 onClick={nextSlide} 
-                className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 p-2 sm:p-3 rounded-full text-gray-800 hover:bg-opacity-100 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <HiChevronRight className="w-6 h-6 sm:w-8 sm:h-8" />
+                className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 p-1 sm:p-2 rounded-full text-gray-800 hover:bg-opacity-100 transition-all duration-300 shadow-lg hover:shadow-xl">
+                <HiChevronRight className="w-4 h-4 sm:w-6 sm:h-6" />
             </button>
             
         </div>

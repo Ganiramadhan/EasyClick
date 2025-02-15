@@ -1,20 +1,20 @@
 import { HiStar, HiOutlineStar } from 'react-icons/hi';
 
-// Data dummy untuk feedback
+// Dummy feedback data
 const dummyFeedback = [
     {
         id: 1,
         name: "John Doe",
         rating: 4.5,
-        comment: "Produknya sangat bagus dan berkualitas. Pengiriman juga cepat!",
+        comment: "The product is excellent and high-quality. Delivery was also fast!",
         date: "2023-10-15",
-        avatar: "https://randomuser.me/api/portraits/men/1.jpg", // URL gambar profil
+        avatar: "https://randomuser.me/api/portraits/men/1.jpg", 
     },
     {
         id: 2,
         name: "Jane Smith",
         rating: 5,
-        comment: "Sangat puas dengan pelayanannya. Barang sesuai deskripsi.",
+        comment: "Very satisfied with the service. The item matched the description perfectly.",
         date: "2023-10-10",
         avatar: "https://randomuser.me/api/portraits/women/2.jpg",
     },
@@ -22,7 +22,7 @@ const dummyFeedback = [
         id: 3,
         name: "Alice Johnson",
         rating: 3.5,
-        comment: "Produknya bagus, tapi pengiriman agak lama.",
+        comment: "The product is good, but the delivery took a bit longer than expected.",
         date: "2023-10-05",
         avatar: "https://randomuser.me/api/portraits/women/3.jpg",
     },
@@ -30,7 +30,7 @@ const dummyFeedback = [
         id: 4,
         name: "Bob Brown",
         rating: 4,
-        comment: "Harga terjangkau dan kualitas oke. Recommended!",
+        comment: "Affordable price and good quality. Highly recommended!",
         date: "2023-09-28",
         avatar: "https://randomuser.me/api/portraits/men/4.jpg",
     },
@@ -38,15 +38,15 @@ const dummyFeedback = [
 
 export default function Feedback() {
     return (
-        <div className="bg-gray-50 dark:bg-gray-900 py-12">
+        <div className="bg-gray-50 dark:bg-gray-900 py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header Feedback */}
-                <div className="text-center mb-12">
+                {/* Feedback Header */}
+                <div className="text-center mb-16">
                     <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                        What Our Customers Say
+                        Customer Testimonials
                     </h2>
                     <p className="text-lg text-gray-600 dark:text-gray-300">
-                        Hear from our satisfied customers about their experiences.
+                        Discover what our customers are saying about their experiences.
                     </p>
                     <div className="mt-6 flex justify-center">
                         <div className="w-16 h-1 bg-green-600 rounded-full"></div>
@@ -63,7 +63,7 @@ export default function Feedback() {
                         return (
                             <div
                                 key={feedback.id}
-                                className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 transform hover:scale-105 transition-transform duration-300"
+                                className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 transform hover:scale-105 transition-transform duration-300 ease-in-out"
                             >
                                 {/* Avatar and Name */}
                                 <div className="flex items-center space-x-4 mb-4">
@@ -77,7 +77,7 @@ export default function Feedback() {
                                             {feedback.name}
                                         </h3>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                                            {new Date(feedback.date).toLocaleDateString("id-ID", {
+                                            {new Date(feedback.date).toLocaleDateString("en-US", {
                                                 year: "numeric",
                                                 month: "long",
                                                 day: "numeric",
