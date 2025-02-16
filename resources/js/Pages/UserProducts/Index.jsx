@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import Carousel from "./Carousel";
 import Promo from "./BestSellerProduct";
 import Feedback from "./Feedback";
-import Footer from "./Footer";
 import Service from "./Services";
 
 export default function KidsClothing({ products, successMessage, isAuthenticated }) {
@@ -62,8 +61,8 @@ export default function KidsClothing({ products, successMessage, isAuthenticated
     };
 
     const images = [
-        "https://i.pinimg.com/736x/b0/28/a7/b028a75bf20580b796617d11bd7bb915.jpg",
-        "https://i.pinimg.com/736x/be/ba/c5/bebac52b6e52ced9b7080d7d00aa981c.jpg",
+        "/storage/assets/banner1.png",
+        "/storage/assets/banner2.png",
         "https://i.pinimg.com/736x/8a/b6/1d/8ab61d9fd080705516c3bbc248fd021b.jpg",
     ];
 
